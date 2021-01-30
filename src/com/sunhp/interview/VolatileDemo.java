@@ -3,7 +3,7 @@ package com.sunhp.interview;
 import java.util.concurrent.TimeUnit;
 
 class MyDate{
-    int number = 0;
+    volatile int number = 0;
 
     public void addTo60(){
         this.number = 60;
@@ -13,6 +13,7 @@ class MyDate{
 /**
  * 验证volatile的可见性
  * 1.1 假如 int number = 0 ，number之前没有被volatile关键字修饰------>启动之后发现没有打印“mission is over”，说明main线程没有感知到值的变化
+ * 1.2
  */
 public class VolatileDemo {
     public static void main(String[] args) {
@@ -30,14 +31,14 @@ public class VolatileDemo {
             }
 
             myDate.addTo60();
-            System.out.println(Thread.currentThread().getName() + "\t update value" + myDate.number);
+            System.out.println(Thread.currentThread().getName() + "\t update value：" + myDate.number);
         },"AAA").start();
 
         //第二个线程是主线程
         while (myDate.number == 0){
             //main线程一直循环等待，直到number的值不再等于0
         }
-        System.out.println(Thread.currentThread().getName() + "\t mission is over");
+        System.out.println(Thread.currentThread().getName() + "\t mission is over" + "value: "+ myDate.number);
 
     }
 }
